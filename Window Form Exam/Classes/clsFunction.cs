@@ -165,7 +165,22 @@ namespace Window_Form_Exam.Classes
             byte[] photo = File.ReadAllBytes(pictureBox.ImageLocation);
             return photo;
         }
-
-        
+        public static Image GetDataToImage(byte[] pData)
+        {
+            try
+            {
+                ImageConverter imgConverter = new ImageConverter();
+                return imgConverter.ConvertFrom(pData) as Image;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return null;
+            }
+        }
+        //public static bool IsNullOrEmpty(PictureBox pic)
+        //{
+            
+        //}
     }
 }

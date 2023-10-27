@@ -10,7 +10,10 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Linq;
 using Window_Form_Exam.Classes;
+using System.IO;
+using System.Drawing.Imaging;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using System.Windows.Forms.VisualStyles;
 
 namespace Window_Form_Exam.Forms.Products
 {
@@ -26,8 +29,8 @@ namespace Window_Form_Exam.Forms.Products
 
         private void Btn_save_Click(object sender, EventArgs e)
         {
-            if (clsFunction.CheckEmptyTextbox(txt_productname,txt_barcode,txt_uniprice,txt_sellprice,txt_qty)== true) { return; }
-            if (clsFunction.CheckEmptyComboBox(cbo_category_name)== true) { return; }
+            if (clsFunction.CheckEmptyTextbox(txt_productname, txt_barcode, txt_uniprice, txt_sellprice, txt_qty) == true) { return; }
+            if (clsFunction.CheckEmptyComboBox(cbo_category_name) == true) { return; }
             objProduct = new clsProduct
             {
                 Productname = txt_productname.Text.Trim(),
@@ -36,14 +39,24 @@ namespace Window_Form_Exam.Forms.Products
                 Sellprice = Convert.ToDouble(txt_sellprice.Text.Trim()),
                 Categoryid = clsDatabase.GetIDFromComboBox(cbo_category_name),
                 Qtyinstock = Convert.ToInt64(txt_qty.Text.Trim())
+                //Photo = img
             };
-            objProduct.Save();
+            if (Pic_photo.ImageLocation == null)
+            {
+                objProduct.Save("noimage");
+            }
+            else
+            {
+                byte[] img = File.ReadAllBytes(Pic_photo.ImageLocation);
+                objProduct.Photo = img;
+                objProduct.Save();
+            }
             clsDatabase.AddDataToDataGridView(dg_product, "select * from view_product");
             clsFunction.ClearTextBoxes(this);
+            clsFunction.RemoveImage(Pic_photo);
             //objProduct.PrintMessage();
             //objProduct.AddDataGridView(dg_product);
             //clsDatabase.AutomaticID("tblproduct", "ProductID");
-
         }
 
         private void btn_update_Click(object sender, EventArgs e)
@@ -58,7 +71,17 @@ namespace Window_Form_Exam.Forms.Products
             objProduct.Sellprice = Convert.ToDouble(txt_sellprice.Text);
             objProduct.Categoryid= clsDatabase.GetIDFromComboBox(cbo_category_name);
             objProduct.Qtyinstock = Convert.ToInt64(txt_qty.Text);
-            objProduct.Update();
+            if (Pic_photo.ImageLocation == null)
+            {
+                objProduct.Update("noimage");
+            }
+            else
+            {
+                byte[] img = File.ReadAllBytes(Pic_photo.ImageLocation);
+                objProduct.Photo = img;
+                objProduct.Update();
+            }
+            clsFunction.ClearTextBoxes(this);
             clsDatabase.AddDataToDataGridView(dg_product, "select * from view_product");
         }
 
@@ -77,6 +100,7 @@ namespace Window_Form_Exam.Forms.Products
                 objProduct.Delete();
                 dg_product.Rows.Remove(dgv);
             }
+            clsFunction.ClearTextBoxes(this);
             clsDatabase.AddDataToDataGridView(dg_product, "select * from view_product");
         }
 
@@ -103,6 +127,22 @@ namespace Window_Form_Exam.Forms.Products
             clsDatabase.AddDataToDataGridView(dg_product,"select * from view_product");
         }
 
+        byte[] ConvertImageToBytes(Image img)
+        {
+            using (MemoryStream ms = new MemoryStream())
+            {
+                img.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+                return ms.ToArray();
+            }
+        }
+        public Image ConvertByteArrayToImage(byte[] bytes)
+        {
+            using (MemoryStream ms = new MemoryStream(bytes))
+            {
+                return Image.FromStream(ms);
+            }
+        }
+
         private void dg_product_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             DataGridViewRow dgv = new DataGridViewRow();
@@ -113,7 +153,32 @@ namespace Window_Form_Exam.Forms.Products
             txt_sellprice.Text = dgv.Cells[4].Value.ToString();
             cbo_category_name.Text = dgv.Cells[5].Value.ToString();
             txt_qty.Text = dgv.Cells[6].Value.ToString();
+            if (dgv.Cells[9].Value != DBNull.Value)
+            {
+                byte[] img = (byte[])dgv.Cells[9].Value;
+                MemoryStream ms = new MemoryStream(img);
+                Pic_photo.Image = Image.FromStream(ms);
+                
+            }
+            else
+            {
+                Pic_photo.Image = null;
+            }
+            //try
+            //{
+            //    MemoryStream ms = new MemoryStream((byte[])(dgv.Cells[9].Value));
+            //    Pic_photo.Image = Image.FromStream(ms);
+            //}
+            //catch (Exception ex)
+            //{
+            //    Console.WriteLine(ex.Message);
+            //}
             
+            //if (col_photo != null)
+            //{
+            //    Pic_photo.Image = ConvertByteArrayToImage((byte[])dgv.Cells[9].Value);
+            //    Pic_photo.Image = clsFunction.GetDataToImage((byte[])(dgv.Cells[9].Value));
+            //}       
         }
 
         private void refreshDataToolStripMenuItem_Click(object sender, EventArgs e)
@@ -127,6 +192,26 @@ namespace Window_Form_Exam.Forms.Products
             {
                 clsDatabase.SearchRecord(dg_product, "select * from view_product where ProductName like '%'+@name+'%' or Barcode like '%'+@name+'%'", txt_search);
             }
+        }
+
+        private void txt_productname_Leave(object sender, EventArgs e)
+        {
+            if(clsDatabase.CheckDouplicated("tblProduct","ProductName",txt_productname,"Name") == true) { return; }
+        }
+
+        private void Btn_browse_Click(object sender, EventArgs e)
+        {
+            clsFunction.SetImage(Pic_photo);
+        }
+
+        private void removePhotoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            clsFunction.RemoveImage(Pic_photo);
+        }
+
+        private void Pic_photo_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

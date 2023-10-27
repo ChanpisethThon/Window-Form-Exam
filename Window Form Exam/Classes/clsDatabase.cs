@@ -184,5 +184,30 @@ namespace Window_Form_Exam.Classes
                 }
             }
         }
+
+        public static bool CheckDouplicated(string table_name, string colunm_name, TextBox txt_name, string msg)
+        {
+            try
+            {
+                sql = "select * from "+table_name+" where "+colunm_name+"=@Name";
+                CMD = new SqlCommand(sql, CON);
+                CMD.Parameters.AddWithValue("@Name", txt_name.Text.Trim());
+                da = new SqlDataAdapter(CMD);
+                tbl = new DataTable();
+                da.Fill(tbl);
+                if (tbl.Rows.Count > 0)
+                {
+                    MessageBox.Show("Has been " + msg + " already");
+                    txt_name.Clear();
+                    txt_name.Focus();
+                    return true;
+                }
+            }
+            catch(SqlException ex)
+            {
+                MessageBox.Show("Error Check Douplicated\n", ex.Message);
+            }
+            return false; 
+        }
     }
 }

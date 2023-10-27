@@ -21,6 +21,7 @@ namespace Window_Form_Exam.Classes
         private long _qtyinstock;
         public string sql = null;
         private DateTime dateTimeVariable = DateTime.Now;
+        private byte[] _photo;
 
 
         public long Productid { get => _productid; set => _productid = value; }
@@ -30,6 +31,7 @@ namespace Window_Form_Exam.Classes
         public double Sellprice { get => _sellprice; set => _sellprice = value; }
         public long Categoryid { get => _categoryid; set => _categoryid = value; }
         public long Qtyinstock { get => _qtyinstock; set => _qtyinstock = value; }
+        public byte[] Photo { get => _photo; set => _photo = value; }
 
         public void PrintMessage()
         {
@@ -61,7 +63,7 @@ namespace Window_Form_Exam.Classes
             {
                 Productid = clsDatabase.AutomaticID("tblproduct", "productid");
                 //sql = "insert into TblProduct values(@productid,@productname,@barcode,@uniprice,@sellprice,@categoryid,@qtyinstock)";
-                sql = "insert into TblProduct " + "(ProductID, ProductName, Barcode, UnitPrice, SellPrice, CategoryID, QtyInStock) values " + "(@productid,@productname,@barcode,@uniprice,@sellprice,@categoryid,@qtyinstock);";
+                sql = "insert into TblProduct " + "(ProductID, ProductName, Barcode, UnitPrice, SellPrice, CategoryID, QtyInStock, Photo) values " + "(@productid,@productname,@barcode,@uniprice,@sellprice,@categoryid,@qtyinstock,@photo);";
                 clsDatabase.CMD = new SqlCommand(sql, clsDatabase.CON);
                 clsDatabase.CMD.Parameters.AddWithValue("@productid",_productid);
                 clsDatabase.CMD.Parameters.AddWithValue("@productname", _productname);
@@ -70,6 +72,7 @@ namespace Window_Form_Exam.Classes
                 clsDatabase.CMD.Parameters.AddWithValue("@sellprice", _sellprice);
                 clsDatabase.CMD.Parameters.AddWithValue("@categoryid", _categoryid);
                 clsDatabase.CMD.Parameters.AddWithValue("@qtyinstock", _qtyinstock);
+                clsDatabase.CMD.Parameters.AddWithValue("@photo", _photo);
                 if (clsDatabase.CON.State == ConnectionState.Closed)
                 {
                     clsDatabase.CON.Open();
@@ -84,7 +87,64 @@ namespace Window_Form_Exam.Classes
             }
         }
 
+        public void Save(string noimage)
+        {
+            try
+            {
+                Productid = clsDatabase.AutomaticID("tblproduct", "productid");
+                //sql = "insert into TblProduct values(@productid,@productname,@barcode,@uniprice,@sellprice,@categoryid,@qtyinstock)";
+                sql = "insert into TblProduct " + "(ProductID, ProductName, Barcode, UnitPrice, SellPrice, CategoryID, QtyInStock, Photo) values " + "(@productid,@productname,@barcode,@uniprice,@sellprice,@categoryid,@qtyinstock,null);";
+                clsDatabase.CMD = new SqlCommand(sql, clsDatabase.CON);
+                clsDatabase.CMD.Parameters.AddWithValue("@productid", _productid);
+                clsDatabase.CMD.Parameters.AddWithValue("@productname", _productname);
+                clsDatabase.CMD.Parameters.AddWithValue("@barcode", _barcode);
+                clsDatabase.CMD.Parameters.AddWithValue("@uniprice", _uniprice);
+                clsDatabase.CMD.Parameters.AddWithValue("@sellprice", _sellprice);
+                clsDatabase.CMD.Parameters.AddWithValue("@categoryid", _categoryid);
+                clsDatabase.CMD.Parameters.AddWithValue("@qtyinstock", _qtyinstock);
+                if (clsDatabase.CON.State == ConnectionState.Closed)
+                {
+                    clsDatabase.CON.Open();
+                }
+                clsDatabase.CMD.ExecuteNonQuery();
+                MessageBox.Show("Saved Successfully!");
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error" + ex.Message);
+            }
+        }
+
         public void Update()
+        {
+            try
+            {
+                //clsDatabase.sql = "update TblProduct set ProductName=@ProductName,Barcode=@barcode,UnitPrice=@unitprice,SellPrice=@sellprice,CategoryID=@categoryid,QtyInStock=@qty where ProductID=@ProductID";
+                clsDatabase.sql = "update TblProduct set ProductName=@ProductName,Barcode=@barcode,UnitPrice=@unitprice,SellPrice=@sellprice,CategoryID=@categoryid,QtyInStock=@qty,UpdatedDate=@updateddate where ProductID=@ProductID";
+                clsDatabase.CMD = new SqlCommand(clsDatabase.sql, clsDatabase.CON);
+                clsDatabase.CMD.Parameters.AddWithValue("@ProductID", _productid);
+                clsDatabase.CMD.Parameters.AddWithValue("@ProductName", _productname);
+                clsDatabase.CMD.Parameters.AddWithValue("@barcode", _barcode);
+                clsDatabase.CMD.Parameters.AddWithValue("@unitprice", _uniprice);
+                clsDatabase.CMD.Parameters.AddWithValue("@sellprice", _sellprice);
+                clsDatabase.CMD.Parameters.AddWithValue("@categoryid", _categoryid);
+                clsDatabase.CMD.Parameters.AddWithValue("@qty", _qtyinstock);
+                clsDatabase.CMD.Parameters.AddWithValue("@updateddate", dateTimeVariable);
+                if (clsDatabase.CON.State == ConnectionState.Closed)
+                {
+                    clsDatabase.CON.Open();
+                }
+                clsDatabase.CMD.ExecuteNonQuery();
+                MessageBox.Show("Updated Successfully!");
+            }
+            catch (SqlException ex)
+            {
+                MessageBox.Show("Error :\n" + ex.Message);
+            }
+        }
+
+        public void Update(string noimage)
         {
             try
             {

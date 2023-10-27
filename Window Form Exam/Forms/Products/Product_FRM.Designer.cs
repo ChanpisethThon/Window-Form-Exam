@@ -56,6 +56,10 @@
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.lbl_username = new System.Windows.Forms.ToolStripStatusLabel();
+            this.Pic_photo = new System.Windows.Forms.PictureBox();
+            this.contextMenuStrip2 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.removePhotoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.Btn_browse = new System.Windows.Forms.Button();
             this.col_productid = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.col_productname = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.col_barcode = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -65,16 +69,19 @@
             this.col_qty = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.col_createddate = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.col_updateddate = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.col_photo = new System.Windows.Forms.DataGridViewImageColumn();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dg_product)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.Pic_photo)).BeginInit();
+            this.contextMenuStrip2.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(64, 78);
+            this.label1.Location = new System.Drawing.Point(5, 78);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(75, 13);
             this.label1.TabIndex = 0;
@@ -82,15 +89,16 @@
             // 
             // txt_productname
             // 
-            this.txt_productname.Location = new System.Drawing.Point(145, 75);
+            this.txt_productname.Location = new System.Drawing.Point(86, 75);
             this.txt_productname.Name = "txt_productname";
             this.txt_productname.Size = new System.Drawing.Size(170, 20);
             this.txt_productname.TabIndex = 1;
+            this.txt_productname.Leave += new System.EventHandler(this.txt_productname_Leave);
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(64, 114);
+            this.label2.Location = new System.Drawing.Point(5, 114);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(47, 13);
             this.label2.TabIndex = 2;
@@ -107,7 +115,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(339, 78);
+            this.label4.Location = new System.Drawing.Point(280, 78);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(51, 13);
             this.label4.TabIndex = 4;
@@ -116,7 +124,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(339, 152);
+            this.label5.Location = new System.Drawing.Point(280, 152);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(80, 13);
             this.label5.TabIndex = 5;
@@ -125,7 +133,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(339, 114);
+            this.label6.Location = new System.Drawing.Point(280, 114);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(29, 13);
             this.label6.TabIndex = 6;
@@ -133,28 +141,28 @@
             // 
             // txt_uniprice
             // 
-            this.txt_uniprice.Location = new System.Drawing.Point(145, 152);
+            this.txt_uniprice.Location = new System.Drawing.Point(86, 152);
             this.txt_uniprice.Name = "txt_uniprice";
             this.txt_uniprice.Size = new System.Drawing.Size(170, 20);
             this.txt_uniprice.TabIndex = 3;
             // 
             // txt_barcode
             // 
-            this.txt_barcode.Location = new System.Drawing.Point(145, 114);
+            this.txt_barcode.Location = new System.Drawing.Point(86, 114);
             this.txt_barcode.Name = "txt_barcode";
             this.txt_barcode.Size = new System.Drawing.Size(170, 20);
             this.txt_barcode.TabIndex = 2;
             // 
             // txt_qty
             // 
-            this.txt_qty.Location = new System.Drawing.Point(425, 114);
+            this.txt_qty.Location = new System.Drawing.Point(366, 114);
             this.txt_qty.Name = "txt_qty";
             this.txt_qty.Size = new System.Drawing.Size(176, 20);
             this.txt_qty.TabIndex = 5;
             // 
             // txt_sellprice
             // 
-            this.txt_sellprice.Location = new System.Drawing.Point(425, 75);
+            this.txt_sellprice.Location = new System.Drawing.Point(366, 75);
             this.txt_sellprice.Name = "txt_sellprice";
             this.txt_sellprice.Size = new System.Drawing.Size(176, 20);
             this.txt_sellprice.TabIndex = 4;
@@ -162,7 +170,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(64, 155);
+            this.label7.Location = new System.Drawing.Point(5, 155);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(53, 13);
             this.label7.TabIndex = 12;
@@ -172,7 +180,7 @@
             // 
             this.cbo_category_name.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbo_category_name.FormattingEnabled = true;
-            this.cbo_category_name.Location = new System.Drawing.Point(425, 151);
+            this.cbo_category_name.Location = new System.Drawing.Point(366, 151);
             this.cbo_category_name.Name = "cbo_category_name";
             this.cbo_category_name.Size = new System.Drawing.Size(176, 21);
             this.cbo_category_name.TabIndex = 6;
@@ -180,7 +188,7 @@
             // 
             // btn_logout
             // 
-            this.btn_logout.Location = new System.Drawing.Point(658, 185);
+            this.btn_logout.Location = new System.Drawing.Point(710, 185);
             this.btn_logout.Name = "btn_logout";
             this.btn_logout.Size = new System.Drawing.Size(75, 23);
             this.btn_logout.TabIndex = 10;
@@ -190,7 +198,7 @@
             // 
             // Btn_save
             // 
-            this.Btn_save.Location = new System.Drawing.Point(658, 74);
+            this.Btn_save.Location = new System.Drawing.Point(710, 74);
             this.Btn_save.Name = "Btn_save";
             this.Btn_save.Size = new System.Drawing.Size(75, 23);
             this.Btn_save.TabIndex = 7;
@@ -200,7 +208,7 @@
             // 
             // btn_update
             // 
-            this.btn_update.Location = new System.Drawing.Point(658, 110);
+            this.btn_update.Location = new System.Drawing.Point(710, 110);
             this.btn_update.Name = "btn_update";
             this.btn_update.Size = new System.Drawing.Size(75, 23);
             this.btn_update.TabIndex = 8;
@@ -210,7 +218,7 @@
             // 
             // btn_delete
             // 
-            this.btn_delete.Location = new System.Drawing.Point(658, 147);
+            this.btn_delete.Location = new System.Drawing.Point(710, 147);
             this.btn_delete.Name = "btn_delete";
             this.btn_delete.Size = new System.Drawing.Size(75, 23);
             this.btn_delete.TabIndex = 9;
@@ -271,7 +279,8 @@
             this.col_categoryname,
             this.col_qty,
             this.col_createddate,
-            this.col_updateddate});
+            this.col_updateddate,
+            this.col_photo});
             this.dg_product.ContextMenuStrip = this.contextMenuStrip1;
             this.dg_product.Location = new System.Drawing.Point(0, 239);
             this.dg_product.MultiSelect = false;
@@ -320,6 +329,42 @@
             this.lbl_username.Size = new System.Drawing.Size(77, 17);
             this.lbl_username.Text = "lbl_username";
             // 
+            // Pic_photo
+            // 
+            this.Pic_photo.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.Pic_photo.ContextMenuStrip = this.contextMenuStrip2;
+            this.Pic_photo.Location = new System.Drawing.Point(557, 49);
+            this.Pic_photo.Name = "Pic_photo";
+            this.Pic_photo.Size = new System.Drawing.Size(138, 179);
+            this.Pic_photo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.Pic_photo.TabIndex = 27;
+            this.Pic_photo.TabStop = false;
+            this.Pic_photo.Click += new System.EventHandler(this.Pic_photo_Click);
+            // 
+            // contextMenuStrip2
+            // 
+            this.contextMenuStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.removePhotoToolStripMenuItem});
+            this.contextMenuStrip2.Name = "contextMenuStrip2";
+            this.contextMenuStrip2.Size = new System.Drawing.Size(153, 26);
+            // 
+            // removePhotoToolStripMenuItem
+            // 
+            this.removePhotoToolStripMenuItem.Name = "removePhotoToolStripMenuItem";
+            this.removePhotoToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.removePhotoToolStripMenuItem.Text = "Remove Photo";
+            this.removePhotoToolStripMenuItem.Click += new System.EventHandler(this.removePhotoToolStripMenuItem_Click);
+            // 
+            // Btn_browse
+            // 
+            this.Btn_browse.Location = new System.Drawing.Point(467, 194);
+            this.Btn_browse.Name = "Btn_browse";
+            this.Btn_browse.Size = new System.Drawing.Size(75, 23);
+            this.Btn_browse.TabIndex = 28;
+            this.Btn_browse.Text = "Browse";
+            this.Btn_browse.UseVisualStyleBackColor = true;
+            this.Btn_browse.Click += new System.EventHandler(this.Btn_browse_Click);
+            // 
             // col_productid
             // 
             this.col_productid.HeaderText = "ID";
@@ -344,18 +389,21 @@
             this.col_uniprice.HeaderText = "Unit Price";
             this.col_uniprice.Name = "col_uniprice";
             this.col_uniprice.ReadOnly = true;
+            this.col_uniprice.Width = 70;
             // 
             // col_sellprice
             // 
             this.col_sellprice.HeaderText = "Sell Price";
             this.col_sellprice.Name = "col_sellprice";
             this.col_sellprice.ReadOnly = true;
+            this.col_sellprice.Width = 70;
             // 
             // col_categoryname
             // 
             this.col_categoryname.HeaderText = "Category";
             this.col_categoryname.Name = "col_categoryname";
             this.col_categoryname.ReadOnly = true;
+            this.col_categoryname.Width = 70;
             // 
             // col_qty
             // 
@@ -369,18 +417,31 @@
             this.col_createddate.HeaderText = "Created Date";
             this.col_createddate.Name = "col_createddate";
             this.col_createddate.ReadOnly = true;
+            this.col_createddate.Width = 80;
             // 
             // col_updateddate
             // 
             this.col_updateddate.HeaderText = "Updated Date";
             this.col_updateddate.Name = "col_updateddate";
             this.col_updateddate.ReadOnly = true;
+            this.col_updateddate.Width = 80;
+            // 
+            // col_photo
+            // 
+            this.col_photo.HeaderText = "Photo";
+            this.col_photo.Name = "col_photo";
+            this.col_photo.ReadOnly = true;
+            this.col_photo.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.col_photo.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.col_photo.Width = 130;
             // 
             // Product_FRM
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.Btn_browse);
+            this.Controls.Add(this.Pic_photo);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.dg_product);
             this.Controls.Add(this.label9);
@@ -413,6 +474,8 @@
             this.contextMenuStrip1.ResumeLayout(false);
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.Pic_photo)).EndInit();
+            this.contextMenuStrip2.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -447,6 +510,10 @@
         public System.Windows.Forms.ToolStripStatusLabel lbl_username;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem refreshDataToolStripMenuItem;
+        private System.Windows.Forms.PictureBox Pic_photo;
+        private System.Windows.Forms.Button Btn_browse;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip2;
+        private System.Windows.Forms.ToolStripMenuItem removePhotoToolStripMenuItem;
         private System.Windows.Forms.DataGridViewTextBoxColumn col_productid;
         private System.Windows.Forms.DataGridViewTextBoxColumn col_productname;
         private System.Windows.Forms.DataGridViewTextBoxColumn col_barcode;
@@ -456,5 +523,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn col_qty;
         private System.Windows.Forms.DataGridViewTextBoxColumn col_createddate;
         private System.Windows.Forms.DataGridViewTextBoxColumn col_updateddate;
+        private System.Windows.Forms.DataGridViewImageColumn col_photo;
     }
 }
